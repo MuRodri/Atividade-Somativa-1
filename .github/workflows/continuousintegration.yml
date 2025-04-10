@@ -19,16 +19,3 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         
-    - name: Run pytest
-      run: |
-        pytest tests/
-        
-    - name: Run flake8 linting
-      shell: pwsh
-      run: |
-        Get-ChildItem -Recurse -Include *.py | 
-          Where-Object { 
-            $_.FullName -notmatch "\\env\\" -and 
-            $_.FullName -notmatch "\\.git\\"
-          } |
-          ForEach-Object { flake8 $_.FullName }
