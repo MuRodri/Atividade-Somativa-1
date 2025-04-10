@@ -18,15 +18,17 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         
-    - name: List Python files
-      run: |
-        find . -name "*.py" -not -path "./venv/*" -not -path "./.git/*"
-        
     - name: Check formatting with Black
       run: |
-        for file in $(find . -name "*.py" -not -path "./venv/*" -not -path "./.git/*"); do
-          black --check "$file"
-        done
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          # Windows PowerShell command
+          Get-ChildItem -Recurse -Include *.py | 
+            Where-Object { $_.FullName -notmatch "\\env\\" -and $_.FullName -notmatch "\\.git\\" -and $_.FullName -notmatch "\\.github\\" } |
+            ForEach-Object { python -m black --config pyproject.toml --check $_.FullName }
+        else
+          # Linux/Mac command
+          python -m black --config pyproject.toml --check $(find . -name "*.py" -not -path "./env/*" -not -path "./.git/*" -not -path "./.github/*")
+        fi
         
     - name: Run tests
       run: |

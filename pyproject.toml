@@ -1,0 +1,16 @@
+[tool.black]
+line-length = 88
+target-version = ['py311']
+skip-string-normalization = true
+exclude = '''
+/(
+  \.git
+  | \.hg
+  | env/bin/
+  | env/include/
+  | env/lib/
+  | env/lib64/
+  | env/pyvenv.cfg
+  | env/Scripts/
+)/
+'''
