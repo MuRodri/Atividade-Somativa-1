@@ -48,6 +48,11 @@ jobs:
     - name: Check formatting with Black
       run: |
         black --check *.py tests/*.py
+
+    - name: Check formatting with Black
+      run: |
+        # Only check Python files in specific directories
+        black --check --extend-exclude="/(\.eggs|\.git|\.hg|\.mypy_cache|\.nox|\.tox|\.venv|venv|_build|buck-out|build|dist|migrations)/" *.py tests/
         
   # Uncomment and configure this when you're ready to deploy
   # deploy:
