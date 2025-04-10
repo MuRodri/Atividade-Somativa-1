@@ -18,13 +18,15 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         
-    - name: List all files (for debugging)
+    - name: List Python files
       run: |
-        find . -type f -exec file {} + | grep -v "UTF-8" || true
+        find . -name "*.py" -not -path "./venv/*" -not -path "./.git/*"
         
     - name: Check formatting with Black
       run: |
-        find . -name "*.py" | xargs black --check
+        for file in $(find . -name "*.py" -not -path "./venv/*" -not -path "./.git/*"); do
+          black --check "$file"
+        done
         
     - name: Run tests
       run: |
