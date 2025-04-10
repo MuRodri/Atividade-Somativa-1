@@ -31,7 +31,12 @@ jobs:
           foreach ($file in $pyFiles) {
           python -m black --config pyproject.toml --check $file.FullName
           }
-        
+
+    - name: Check formatting with Black
+      shell: pwsh
+      run: |
+        ./check_formatting.ps1    
+
     - name: Run tests
       run: |
         pytest tests/
