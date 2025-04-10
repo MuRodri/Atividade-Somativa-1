@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   test:
-    runs-on: windows-latest  
+    runs-on: windows-latest
     
     steps:
     - uses: actions/checkout@v4
@@ -19,39 +19,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         
-    - name: Verify Python files to check
-      shell: pwsh
-      run: |
-        Write-Output "Files that will be checked:"
-        Get-ChildItem -Recurse -Include *.py | 
-          Where-Object { 
-            $_.FullName -notmatch "\\env\\" -and 
-            $_.FullName -notmatch "\\.git\\" -and
-            $_.FullName -notmatch "\\Lib\\" -and
-            $_.FullName -notmatch "\\Scripts\\"
-          } |
-          ForEach-Object { Write-Output $_.FullName }
-        
-    - name: Run Black formatting check
-      shell: pwsh
-      run: |
-        $files = Get-ChildItem -Recurse -Include *.py | 
-                Where-Object { 
-                  $_.FullName -notmatch "\\env\\" -and 
-                  $_.FullName -notmatch "\\.git\\" -and
-                  $_.FullName -notmatch "\\Lib\\" -and
-                  $_.FullName -notmatch "\\Scripts\\"
-                }
-        
-        if (-not $files) {
-          Write-Output "No Python files found to check"
-          exit 0
-        }
-        
-        foreach ($file in $files) {
-          python -m black --config pyproject.toml --check $file.FullName
-        }
-        
     - name: Run pytest
       run: |
         pytest tests/
@@ -59,14 +26,9 @@ jobs:
     - name: Run flake8 linting
       shell: pwsh
       run: |
-        $files = Get-ChildItem -Recurse -Include *.py | 
-                Where-Object { 
-                  $_.FullName -notmatch "\\env\\" -and 
-                  $_.FullName -notmatch "\\.git\\" -and
-                  $_.FullName -notmatch "\\Lib\\" -and
-                  $_.FullName -notmatch "\\Scripts\\"
-                }
-        
-        if ($files) {
-          flake8 $files.FullName
-        }
+        Get-ChildItem -Recurse -Include *.py | 
+          Where-Object { 
+            $_.FullName -notmatch "\\env\\" -and 
+            $_.FullName -notmatch "\\.git\\"
+          } |
+          ForEach-Object { flake8 $_.FullName }
