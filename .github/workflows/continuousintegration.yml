@@ -44,6 +44,10 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+
+    - name: Check formatting with Black
+      run: |
+        black --check *.py tests/*.py
         
   # Uncomment and configure this when you're ready to deploy
   # deploy:
