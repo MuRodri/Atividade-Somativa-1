@@ -19,3 +19,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         
+    - name: Discord Commits
+      uses: Sniddl/discord-commits@v1.6
+      with:
+        webhook: ${{ secrets.DISCORD_WEBHOOK }}
+        template: "avatar-with-link"
+        include-extras: true
