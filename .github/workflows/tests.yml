@@ -17,4 +17,4 @@ jobs:
         pip install fastapi pytest httpx
     - name: Run tests
       run: |
-        pytest -v test_main.py
+        pytest -v C:\Users\muoro\OneDrive\Área de Trabalho\Facu\6º Semestre\DevOps\AS1\src\test_main.py
